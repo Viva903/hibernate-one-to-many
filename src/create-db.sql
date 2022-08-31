@@ -50,5 +50,22 @@ CREATE TABLE `course` (
   ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
+DROP TABLE IF exists `review`;
+CREATE TABLE `review` (
+	`id` int(11) not null auto_increment,
+    `comment` VARCHAR(256) default null,
+    `course_id` int(11) default null,
+    
+    primary key (`id`),
+    
+    key `FK_COURSE_ID_idx` (`course_id`),
+    
+    constraint `FK_COURSE_ID` 
+    foreign key (`course_id`)
+    references `course` (`id`)
+    
+    on update no action on delete no action
+)engine=InnoDB auto_increment=1 default char set=latin1;
+
 
 SET FOREIGN_KEY_CHECKS = 1;
