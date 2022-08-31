@@ -13,30 +13,33 @@ public class EagerLazyDemo {
 	public static void main(String[] args) {
 
 //		create session factory
-		SessionFactory factory = new Configuration()
-									.configure("hibernate.cfg.xml")
-									.addAnnotatedClass(Instructor.class)
-									.addAnnotatedClass(InstructorDetails.class)
-									.addAnnotatedClass(Course.class)
-									.buildSessionFactory();
+		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Instructor.class)
+				.addAnnotatedClass(InstructorDetails.class).addAnnotatedClass(Course.class).buildSessionFactory();
 //		create session
 		Session session = factory.getCurrentSession();
 
 		try {
 //			start a transaction
 			session.beginTransaction();
-			
+
 //			get instructor from db
 			int theIntructorId = 1;
 			Instructor tempInstructor = session.get(Instructor.class, theIntructorId);
-			
-			System.out.println("viva903 => Instructor : " + tempInstructor);
+
+			System.out.println("\nviva903 => Instructor : " + tempInstructor + "\n");
+
 //			fetch type : lazy, only retrieve courses on demand 
-			System.out.println("viva903 => Courses Associated : " + tempInstructor.getCourses());
-			
+			System.out.println("\nviva903 => Courses Associated : " + tempInstructor.getCourses() + "\n");
+
 //			commit transaction
 			session.getTransaction().commit();
-			System.out.println("viva903 => Done!");
+
+//			Add this to test lazy loading after session closed
+			System.out.println("\nThe session is now closed!\n");
+			session.close();
+			System.out.println("\nviva903 => Courses Associated : " + tempInstructor.getCourses()+ "\n");
+
+			System.out.println("\nviva903 => Done!"+ "\n");
 
 		} catch (Exception e) {
 			e.printStackTrace();
